@@ -213,8 +213,3 @@ def predict():
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-# For Vercel serverless
-def handler(request):
-    with app.request_context(request.environ):
-        return app.full_dispatch_request()
