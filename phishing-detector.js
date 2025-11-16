@@ -10,7 +10,7 @@ document.getElementById('phishingForm').addEventListener('submit', async (e) => 
   resultDiv.innerHTML = '<p style="color: #fff; background: #333; padding: 10px; border-radius: 5px;">Analyzing URL...</p>';
 
   try {
-    const response = await fetch('/predict', {
+    const response = await fetch('/api/predict', {
       method: 'POST',
       body: formData
     });
