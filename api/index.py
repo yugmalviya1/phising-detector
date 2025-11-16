@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 import os
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 def extract_url_features(url):
     """Extract features from URL to detect phishing"""
@@ -193,11 +193,21 @@ def predict_phishing(url):
             'risk_factors': risk_factors if risk_factors else ['No major red flags detected']
         }
 
-@app.route('/api/predict', methods=['POST'])
+@app.route('/api/test', methods=['GET'])
+def test():
+    return jsonify({'status': 'API is working!', 'message': 'PhishAlert API is online'})
+
+@app.route('/api/predict', methods=['POST', 'OPTIONS'])
 def predict():
+    if request.method == 'OPTIONS':
+        return '', 204
     try:
         # Get URL from form data or JSON
-        url = request.form.get('name') or request.json.get('name') if request.is_json else None
+        url = None
+        if request.is_json:
+            url = request.json.get('name')
+        else:
+            url = request.form.get('name')
         
         if not url:
             return jsonify({'error': 'No URL provided'}), 400
