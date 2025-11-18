@@ -201,6 +201,7 @@ def serve_static(path):
     return send_from_directory('.', path)
 
 @app.route('/predict', methods=['POST'])
+@app.route('/api/predict', methods=['POST'])
 def predict():
     try:
         # Get URL from form data
